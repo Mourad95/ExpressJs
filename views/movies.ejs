@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Express Movies</title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+
+<body>
+    <div class="central">
+
+        <%include ./partials/header.ejs%>
+        
+
+            <h1> <%= frenchTitle %></h1>
+            <div>
+                <% for(movie of filmFrancais) {%>
+
+                    <div><%=movie.title %> <%= movie.year %></div>
+
+                    <%}
+                %>
+            </div>
+    </div>
+    <%include ./partials/footer.ejs%>
+
+</body>
+
+</html>
