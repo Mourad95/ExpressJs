@@ -40,7 +40,18 @@
             axios.get(query).
                     then(function(response){
                         console.log(response)
+                        displayResults(response.data.results) //on va cherche la propriété data qui contient la propriété results
+
                     });
+        }
+
+        function displayResults(results) {
+            resultsDiv.innerHTML =''; // on vide le contenu de resultsDiv
+            for(result of results) {// for of permet d'itérer sur tout les objects
+                let movieDiv = document.createElement('div')
+                movieDiv.innerHTML = result.original_title;
+                resultsDiv.appendChild(movieDiv); //appendCHild sert à ajouter dans la page l'élément movieDiv
+            }   
         }
     </script>
 </body>

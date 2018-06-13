@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer();
+const jwt = require('jsonwebtoken')
 
 const app = new express();
 const PORT = 3000;
@@ -63,23 +64,60 @@ app.post('/movies', upload.fields([]),(req,res)=>{ // utilisation de multer
         frenchMovies = [...frenchMovies, newMovie]
         res.sendStatus(201);
     }
-} )
+} );
 
 app.get('/movies/add',(req, res)=>{ 
     res.send(`Porchainement, un formulaire d'ajout ici`)
-})
+});
+
+app.get('/login', (req,res)=>{
+    res.render('login',{title: 'connexion'})
+
+});
+const fakeUser = {email:'testuser@testmail.fr', password:'qsd'}
+const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
+
+app.post('/login',urlencodedParser,(req,res)=>{
+    console.log('login post', req.body)
+    if (!req.body){
+        return res.sendStatus(500)
+    }
+    else{
+        if(fakeUser.email === req.body.email && fakeUser.password === req.body.password){
+            const myToken = jwt.sign({ 
+                iss:'www.expressMovies.fr',
+                user:'sam',
+                role:'moderator'
+            },secret);
+            res.json(myToken); 
+            
+        }
+        else{
+            res.sendStatus(401)
+        }
+    }
+});
+
+
+
+
+app.get('/movies-search',(req,res)=>{
+    const movieSearched= req.params.movieSearched
+    res.render('movies-search', {searchedMovie: movieSearched})
+});
+
+
 
 app.get('/movies/:idMovie',(req, res) =>{ //route idMovie 
     const idMovie = req.params.idMovie;
     
     res.render('movies-details',{movieId :idMovie})
     
-})
+});
 
-app.get('/movies-search',(req,res)=>{
-    const movieSearched= req.params.movieSearched
-    res.render('movies-search', {searchedMovie: movieSearched})
-})
+
+
+
 
 
 
